@@ -27,7 +27,7 @@ with st.expander("Other options", expanded=False):
 word_case = 'Sensitve' if case_sensitive else "Insensitive"
 filename = f"{query}-{year_range[0]}-{year_range[1]}-{smoothing}-{word_case}.csv"
 
-if st.button("Create") and query is not "":
+if st.button("Create") and query != "":
     url,content,df = getNgrams(
         query=query,
         corpus=corpus,
@@ -36,6 +36,7 @@ if st.button("Create") and query is not "":
         caseInsensitive= not case_sensitive,
         smoothing=smoothing
     )
+    st.write(content)
     if not df.empty:
         st.write(f"Preview on [Google Ngram Viewer]({url})")
         fig, ax = plt.subplots()
