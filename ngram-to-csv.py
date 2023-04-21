@@ -23,7 +23,7 @@ word_case = 'Sensitve' if case_sensitive else "Insensitive"
 filename = f"{query}-{year_range[0]}-{year_range[1]}-{smoothing}-{word_case}.csv"
 
 if st.button("Create"):
-    _,__,df = getNgrams(
+    url,content,df = getNgrams(
         query=query,
         corpus=corpus,
         startYear=year_range[0],
@@ -31,6 +31,7 @@ if st.button("Create"):
         caseInsensitive= not case_sensitive,
         smoothing=smoothing
     )
+    st.write(url)
     fig, ax = plt.subplots()
     df.plot(kind = 'line', ax=ax)
     st.plotly_chart(fig, use_container_width=True)
