@@ -1,28 +1,33 @@
+from click import option
 import streamlit as st
 import pandas as pd
 from getngrams import corpora, getNgrams
 import matplotlib.pyplot as plt
 
 st.write("# Google N-gram to CSV")
-st.write("""(Original work by https://github.com/econpy/google-ngrams.
+st.write("""(Credit to https://github.com/econpy/google-ngrams for the original work.
 This is an updated version since Google changed its code.)\n
-Retrieve data from Google Ngram viewer.
+Use this website to easily extract data from the [Google Ngram Viewer](https://books.google.com/ngrams/info).
 """)
 
-query = st.text_input(label="Query")
+st.markdown('---')
 
-year_range = st.slider("Year", min_value=1700, max_value=2019, value=(1900, 2019))
+query = st.text_input(label="Enter your query:", value="housing bubble")
 
-corpus = st.selectbox("Corpus", options = corpora.keys(), index = 6)
+year_range = st.slider("Select the time period:", min_value=1700, max_value=2019, value=(1900, 2019))
 
-case_sensitive = st.checkbox("Sensitive to Case?", value=True)
+with st.expander("Other options", expanded=False):
 
-smoothing = st.slider("Smoothing Parameter", min_value=0, max_value=50, value = 2)
+    corpus = st.selectbox("Select the corpus", options = corpora.keys(), index = 6)
+
+    case_sensitive = st.checkbox("Sensitive to Case?", value=True)
+
+    smoothing = st.slider("Smoothing Parameter (Moving average)", min_value=0, max_value=50, value = 2)
 
 word_case = 'Sensitve' if case_sensitive else "Insensitive"
 filename = f"{query}-{year_range[0]}-{year_range[1]}-{smoothing}-{word_case}.csv"
 
-if st.button("Create"):
+if st.button("Create") and query is not "":
     url,content,df = getNgrams(
         query=query,
         corpus=corpus,
@@ -31,12 +36,15 @@ if st.button("Create"):
         caseInsensitive= not case_sensitive,
         smoothing=smoothing
     )
-    st.write(url)
-    fig, ax = plt.subplots()
-    df.plot(kind = 'line', ax=ax)
-    st.plotly_chart(fig, use_container_width=True)
+    if not df.empty:
+        st.write(f"Preview on [Google Ngram Viewer]({url})")
+        fig, ax = plt.subplots()
+        df.plot(kind = 'line', ax=ax)
+        st.plotly_chart(fig, use_container_width=True)
 
-    st.download_button("Download CSV",
-                       df.to_csv(),
-                       file_name=filename,
+        st.download_button("Download CSV",
+                        df.to_csv(),
+                        file_name=filename,
                        mime='text/csv')
+    else:
+        st.write("No data available!")
