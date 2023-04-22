@@ -1,3 +1,5 @@
+# I did not have time to write the README file! The following is originated from `econpy/google-ngrams`
+
 # About #
 
 Here you'll find a basic python script to retrieve data behind the trajectories plotted on the [Google Ngram Viewer](http://books.google.com/ngrams). A Python script that creates [XKCD](http://www.xkcd.com) style plots from the ngram CSV data is also included, making it simple to create some awesome looking plots!
