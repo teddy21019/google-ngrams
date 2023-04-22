@@ -64,9 +64,11 @@ if st.button("Create") and query != "":
         # st.plotly_chart(fig, use_container_width=True)
         st.write(f"Preview on [Google Ngram Viewer]({url})")
 
+        st.write("### Data")
         st.download_button("Download CSV",
                         df.to_csv(),
                         file_name=filename,
                        mime='text/csv')
+        st.dataframe(df.style.format('{:.6E}'), use_container_width=True)
     else:
         st.write("No data available!")
