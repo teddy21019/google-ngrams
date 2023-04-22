@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 from getngrams import corpora, getNgrams
 import matplotlib.pyplot as plt
+import plotly.express as px
+
 
 st.write("# Google N-gram to CSV")
 st.write("""(Credit to https://github.com/econpy/google-ngrams for the original work.
@@ -36,12 +38,31 @@ if st.button("Create") and query != "":
         caseInsensitive= not case_sensitive,
         smoothing=smoothing
     )
-    st.write(content)
+    st.write(f"## {content} - {year_range[0]} to {year_range[1]} (_{corpus}_ corpus)")
     if not df.empty:
+        fig = px.line(df, x=df.index, y=df.columns,
+                      labels={
+                            "index": "Year",
+                            "variable": "Key word",
+                            "value": "Frequency"
+                      },
+                      line_shape= "spline")
+        fig.update_layout(
+            yaxis_tickformat = '.6e',
+            hovermode = 'x unified'
+        )
+        fig.update_traces(
+            hovertemplate="""
+            <br>Frequency: %{y}
+            """
+        )
+        st.plotly_chart(fig)
+
+
+        # fig, ax = plt.subplots()
+        # df.plot(kind = 'line', ax=ax)
+        # st.plotly_chart(fig, use_container_width=True)
         st.write(f"Preview on [Google Ngram Viewer]({url})")
-        fig, ax = plt.subplots()
-        df.plot(kind = 'line', ax=ax)
-        st.plotly_chart(fig, use_container_width=True)
 
         st.download_button("Download CSV",
                         df.to_csv(),
