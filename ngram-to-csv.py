@@ -14,7 +14,7 @@ Use this website to easily extract data from the [Google Ngram Viewer](https://b
 
 st.markdown('---')
 
-query = st.text_input(label="Enter your query:", value="housing bubble")
+query = st.text_input(label="Enter your query:", value="Dawes Plan")
 
 year_range = st.slider("Select the time period:", min_value=1700, max_value=2019, value=(1900, 2019))
 
