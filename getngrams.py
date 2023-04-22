@@ -36,7 +36,7 @@ corpora = {'American English 2019': 'en-US-2019',
            'Russian 2012': 'ru-2012',
            'Russian 2009': 'ru-2009',
            'Italian 2019': 'it-2019',
-           'Italian 2012': 'it_2012'}
+           'Italian 2012': 'it-2012'}
 
 def getNgrams(query, corpus, startYear, endYear, smoothing, caseInsensitive):
     params = dict(content=query, year_start=startYear, year_end=endYear,
